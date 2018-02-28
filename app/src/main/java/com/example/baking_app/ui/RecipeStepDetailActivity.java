@@ -30,9 +30,8 @@ public class RecipeStepDetailActivity extends AppCompatActivity {
         }
 
         if (savedInstanceState == null) {
-
             Intent intent = getIntent();
-            if (!intent.hasExtra(RecipeStepDetailFragment.ARG_STEP)) {
+            if (!intent.hasExtra(RecipeStepDetailFragment.ARG_STEP) || !intent.hasExtra(RecipeStepDetailFragment.ARG_RECIPE)) {
                 Toast.makeText(this, getString(R.string.recipe_step_not_found_error), Toast.LENGTH_LONG).show();
                 finish();
                 return;
@@ -40,6 +39,7 @@ public class RecipeStepDetailActivity extends AppCompatActivity {
 
             Bundle arguments = new Bundle();
             arguments.putParcelable(RecipeStepDetailFragment.ARG_STEP, getIntent().getParcelableExtra(RecipeStepDetailFragment.ARG_STEP));
+            arguments.putParcelable(RecipeStepDetailFragment.ARG_RECIPE, getIntent().getParcelableExtra(RecipeStepDetailFragment.ARG_RECIPE));
             RecipeStepDetailFragment fragment = new RecipeStepDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()

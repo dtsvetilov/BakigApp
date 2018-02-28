@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Parcel
 public class Recipe {
-    private String id;
-    private String servings;
+    private int id;
+    private int servings;
     private String name;
     private String image;
 

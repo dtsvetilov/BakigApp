@@ -6,11 +6,16 @@
     <dimen name="content_margin">16dp</dimen>
     <dimen name="card_corner_radius">4dp</dimen>
     <dimen name="card_elevation">4dp</dimen>
-    <dimen name="recipe_image_height">120dp</dimen>
+    <dimen name="recipe_image_width">120dp</dimen>
     <dimen name="loading_indicator_width">42dp</dimen>
     <dimen name="loading_indicator_height">42dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="app_bar_height">200dp</dimen>
     <dimen name="item_width">400dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+
+    <dimen name="text_size_content">14sp</dimen>
+    <dimen name="text_size_title">24sp</dimen>
+    <dimen name="text_size_indicator">18sp</dimen>
+    <dimen name="step_indicator_dimension">32dp</dimen>
 </resources>

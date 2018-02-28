@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Parcel
 public class Step {
-    private String id;
+    private int id;
     private String shortDescription;
     private String description;
     private String videoURL;

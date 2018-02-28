@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -75,8 +76,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         StringBuilder stringBuilder = new StringBuilder();
         for (Ingredient ingredient : mRecipe.getIngredients()) {
             stringBuilder
-                    .append(getString(R.string.list_bullet))
-                    .append(" ")
+                    .append("-")
                     .append(ingredient.getIngredient())
                     .append(" (")
                     .append(ingredient.getQuantity())
@@ -85,6 +85,8 @@ public class RecipeDetailActivity extends AppCompatActivity {
                     .append(")")
                     .append("\n\n");
         }
+
+        stringBuilder.setLength(stringBuilder.length() - 2);
 
         mIngredientsTv.setText(stringBuilder.toString());
     }
@@ -106,6 +108,9 @@ public class RecipeDetailActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecipeStepsRv.setLayoutManager(layoutManager);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, layoutManager.getOrientation());
+        mRecipeStepsRv.addItemDecoration(dividerItemDecoration);
     }
 
     private IRecipeStepClickListener recipeStepClickListener = new IRecipeStepClickListener() {
@@ -114,6 +119,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
             if (mTwoPane) {
                 Bundle arguments = new Bundle();
                 arguments.putParcelable(RecipeStepDetailFragment.ARG_STEP, Parcels.wrap(step));
+                arguments.putParcelable(RecipeStepDetailFragment.ARG_RECIPE, Parcels.wrap(mRecipe));
                 RecipeStepDetailFragment fragment = new RecipeStepDetailFragment();
                 fragment.setArguments(arguments);
                 getSupportFragmentManager()
@@ -123,6 +129,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
             } else {
                 Intent intent = new Intent(RecipeDetailActivity.this, RecipeStepDetailActivity.class);
                 intent.putExtra(RecipeStepDetailFragment.ARG_STEP, Parcels.wrap(step));
+                intent.putExtra(RecipeStepDetailFragment.ARG_RECIPE, Parcels.wrap(mRecipe));
 
                 startActivity(intent);
             }

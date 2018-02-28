@@ -16,7 +16,6 @@
 
 package com.example.baking_app.ui;
 
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,10 +45,13 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesA
 
     public class RecipesAdapterViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.image_iv)
-        ImageView imageIv;
+        ImageView mImageIv;
 
         @BindView(R.id.title_tv)
-        TextView titleTv;
+        TextView mTitleTv;
+
+        @BindView(R.id.servings_tv)
+        TextView mServingsTv;
 
         public RecipesAdapterViewHolder(View view) {
             super(view);
@@ -57,13 +59,15 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesA
         }
 
         public void bindToData(Recipe recipe) {
-            titleTv.setText(recipe.getName());
+            mTitleTv.setText(recipe.getName());
 
-            Uri imageUri = recipe.getImageUri();
-            Picasso.with(imageIv.getContext())
-                    .load(imageUri)
+            String servingsText = recipe.getServings() + " " + mServingsTv.getContext().getString(R.string.servings);
+            mServingsTv.setText(servingsText);
+
+            Picasso.with(mImageIv.getContext())
+                    .load(recipe.getImageUri())
                     .placeholder(R.drawable.ic_recipe_placeholder)
-                    .into(imageIv);
+                    .into(mImageIv);
 
             itemView.setOnClickListener(view -> mClickHandler.onRecipeClick(recipe));
         }
@@ -71,7 +75,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesA
 
     @Override
     public RecipesAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.grid_item_recipe, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.recycler_view_item_recipe, viewGroup, false);
         return new RecipesAdapterViewHolder(view);
     }
 

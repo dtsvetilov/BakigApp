@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -16,6 +16,8 @@ import com.example.baking_app.R;
 
 import org.parceler.Parcels;
 
+import butterknife.BindBool;
+import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -32,6 +34,12 @@ public class MainActivity extends AppCompatActivity {
 
     private RecipesAdapter mAdapter;
 
+    @BindBool(R.bool.is_tablet)
+    boolean mIsTablet;
+
+    @BindInt(R.integer.grid_column_count)
+    int mGridColumnsCount;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         mAdapter = new RecipesAdapter(onRecipeItemClickListener);
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.setAdapter(mAdapter);
+        setUpRecyclerView();
 
         mLoadingIndicator.setVisibility(View.VISIBLE);
 
@@ -56,6 +63,13 @@ public class MainActivity extends AppCompatActivity {
                 showMoviesDataView();
             }
         });
+    }
+
+    private void setUpRecyclerView() {
+        RecyclerView.LayoutManager layoutManager = new StaggeredGridLayoutManager(mGridColumnsCount, StaggeredGridLayoutManager.VERTICAL);
+
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void showMoviesDataView() {

@@ -51,11 +51,11 @@ public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepsAdapter.
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.id_text)
-        TextView mIdView;
+        @BindView(R.id.indicator_tv)
+        TextView mIndicatorTv;
 
-        @BindView(R.id.content)
-        TextView mContentView;
+        @BindView(R.id.text_tv)
+        TextView mTextTv;
 
         ViewHolder(View view) {
             super(view);
@@ -63,7 +63,8 @@ public class RecipeStepsAdapter extends RecyclerView.Adapter<RecipeStepsAdapter.
         }
 
         public void bindToData(Step step) {
-            mIdView.setText(step.getShortDescription());
+            mIndicatorTv.setText(String.valueOf(step.getId()));
+            mTextTv.setText(step.getShortDescription());
 
             itemView.setOnClickListener(view -> mRecipeStepClickListener.onRecipeStepClick(step));
         }

@@ -8,4 +8,5 @@
     <string name="recipe_not_found_error">Recipe not found.</string>
     <string name="list_bullet">♦</string>
     <string name="recipe_step_not_found_error">Recipe step not found.</string>
+    <string name="servings">serving(s)</string>
 </resources>
