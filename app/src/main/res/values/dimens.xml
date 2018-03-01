@@ -18,4 +18,6 @@
     <dimen name="text_size_title">24sp</dimen>
     <dimen name="text_size_indicator">18sp</dimen>
     <dimen name="step_indicator_dimension">32dp</dimen>
+
+    <dimen name="video_width">300dp</dimen>
 </resources>

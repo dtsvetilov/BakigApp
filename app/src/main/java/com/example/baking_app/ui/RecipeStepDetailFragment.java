@@ -4,11 +4,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.media.session.MediaSessionCompat;
-import android.support.v4.media.session.PlaybackStateCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.baking_app.R;
 import com.example.baking_app.data.Recipe;
@@ -32,6 +31,7 @@ import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class RecipeStepDetailFragment extends Fragment {
     public static final String ARG_STEP = "step";
@@ -51,9 +51,13 @@ public class RecipeStepDetailFragment extends Fragment {
     @BindView(R.id.video_ep)
     SimpleExoPlayerView mPlayerView;
 
+    @BindView(R.id.title_tv)
+    TextView mTitleTv;
+
+    @BindView(R.id.description_tv)
+    TextView mDescriptionTv;
+
     private SimpleExoPlayer mExoPlayer;
-    private MediaSessionCompat mMediaSession;
-    private PlaybackStateCompat.Builder mStateBuilder;
     private BandwidthMeter mBandwidthMeter;
     private TrackSelector mTrackSelector;
 
@@ -61,6 +65,8 @@ public class RecipeStepDetailFragment extends Fragment {
 
     public RecipeStepDetailFragment() {
     }
+
+    private View.OnClickListener onClickListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,10 +85,8 @@ public class RecipeStepDetailFragment extends Fragment {
 
         ButterKnife.bind(this, rootView);
 
-        if (savedInstanceState == null) {
-            // Create exoplayer to show recipe video
-            createMediaPlayer();
-        }
+        if (savedInstanceState == null)
+            fillData();
 
         return rootView;
     }
@@ -90,15 +94,16 @@ public class RecipeStepDetailFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if ((Util.SDK_INT <= 23 || mExoPlayer == null)) {
-            createMediaPlayer();
+        if (mExoPlayer == null) {
+            fillData();
         }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if (mExoPlayer != null) mPlayerPosition = mExoPlayer.getCurrentPosition();
+        if (mExoPlayer != null)
+            mPlayerPosition = mExoPlayer.getCurrentPosition();
         releasePlayer();
     }
 
@@ -113,24 +118,18 @@ public class RecipeStepDetailFragment extends Fragment {
             mExoPlayer = null;
         }
 
-        if (mMediaSession != null) {
-            mMediaSession.setActive(false);
-        }
-
         if (mTrackSelector != null) {
             mTrackSelector = null;
         }
     }
 
-    public void createMediaPlayer() {
-
+    public void fillData() {
         boolean hasVideoUrl = mStep.getVideoURL() != null && !mStep.getVideoURL().isEmpty();
-        boolean hasThumbnail = mStep.getThumbnailURL() != null && !mStep.getThumbnailURL().isEmpty();
 
         if (hasVideoUrl) {
             //noMediaIV.setVisibility(View.GONE);
 
-            initializeMediaSession();
+            //initializeMediaSession();
             initializePlayer(Uri.parse(mStep.getVideoURL()));
         } else {
             //noMediaIV.setVisibility(View.VISIBLE);
@@ -144,10 +143,12 @@ public class RecipeStepDetailFragment extends Fragment {
                 noMediaIV.setImageResource(R.drawable.default_recipe_image);
             }*/
         }
+
+        mTitleTv.setText(mStep.getShortDescription());
+        mDescriptionTv.setText(mStep.getDescription());
     }
 
     private void initializePlayer(Uri mediaUri) {
-
         if (mExoPlayer == null) {
             TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(mBandwidthMeter);
             mTrackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
@@ -158,7 +159,7 @@ public class RecipeStepDetailFragment extends Fragment {
             mBandwidthMeter = new DefaultBandwidthMeter();
 
             String userAgent = Util.getUserAgent(getContext(), TAG);
-            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getContext(), userAgent);
+            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(getActivity(), userAgent);
             MediaSource mediaSource = new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(mediaUri);
             mExoPlayer.prepare(mediaSource);
 
@@ -167,45 +168,17 @@ public class RecipeStepDetailFragment extends Fragment {
         }
     }
 
-    private void initializeMediaSession() {
+    @OnClick(R.id.previous_fab)
+    public void onPreviousStepClick(View view) {
 
-        mMediaSession = new MediaSessionCompat(getContext(), TAG);
-
-        mMediaSession.setFlags(
-                MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS |
-                        MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
-        mMediaSession.setMediaButtonReceiver(null);
-
-        mStateBuilder = new PlaybackStateCompat.Builder()
-                .setActions(
-                        PlaybackStateCompat.ACTION_PLAY |
-                                PlaybackStateCompat.ACTION_PAUSE |
-                                PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS |
-                                PlaybackStateCompat.ACTION_PLAY_PAUSE);
-
-        mMediaSession.setPlaybackState(mStateBuilder.build());
-        mMediaSession.setCallback(new MediaSessionCallback());
-        mMediaSession.setActive(true);
     }
 
-    private class MediaSessionCallback extends MediaSessionCompat.Callback {
+    @OnClick(R.id.next_fab)
+    public void onNextStepClick(View view) {
 
-        @Override
-        public void onPlay() {
-            super.onPlay();
-            mExoPlayer.setPlayWhenReady(true);
-        }
+    }
 
-        @Override
-        public void onPause() {
-            super.onPause();
-            mExoPlayer.setPlayWhenReady(false);
-        }
-
-        @Override
-        public void onSkipToPrevious() {
-            super.onSkipToPrevious();
-            mExoPlayer.seekTo(0);
-        }
+    public interface IStepChangeListener {
+        void onStepChange(Step stepToShow);
     }
 }
