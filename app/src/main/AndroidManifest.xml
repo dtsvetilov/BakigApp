@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".ui.BakingApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -35,11 +36,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.nanodegree.dnl.bakingapp.ui.DetailActivity" />
         </activity>
-        <activity android:name="com.nanodegree.dnl.bakingapp.ui.WidgetActivity"
+        <activity
+            android:name="com.nanodegree.dnl.bakingapp.ui.WidgetActivity"
             android:label="Choose Recipe"
             android:launchMode="singleTop">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
 
@@ -53,7 +55,7 @@
                 android:resource="@xml/baking_app_widget_info" />
         </receiver>
 
-        <service android:name="com.nanodegree.dnl.bakingapp.ui.BakingAppWidgetService"/>
+        <service android:name="com.nanodegree.dnl.bakingapp.ui.BakingAppWidgetService" />
     </application>
 
 </manifest>

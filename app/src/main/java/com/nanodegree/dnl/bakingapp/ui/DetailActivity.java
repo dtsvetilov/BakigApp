@@ -15,7 +15,7 @@ import butterknife.ButterKnife;
 import static android.support.v4.app.NavUtils.navigateUpFromSameTask;
 
 
-public class DetailActivity extends AppCompatActivity implements RecipeDetailFragment.OnStepClickListener {
+public class DetailActivity extends AppCompatActivity implements RecipeDetailFragment.IStepClickListener {
 
     private boolean mTwoPane;
     private Recipe mRecipe;

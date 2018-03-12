@@ -9,9 +9,6 @@ import android.widget.RemoteViews;
 
 import com.nanodegree.dnl.bakingapp.ui.WidgetActivity;
 
-/**
- * Implementation of App Widget functionality.
- */
 public class BakingAppWidget extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, String[] recipe) {
@@ -36,10 +33,7 @@ public class BakingAppWidget extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        String[] recipe = new String[3];
-        recipe[0] = "0";
-        recipe[1] = "";
-        recipe[2] = context.getString(R.string.appwidget_text);
+        String[] recipe = new String[]{"0", "", context.getString(R.string.appwidget_text)};
         updateWidget(context, appWidgetManager, appWidgetIds, recipe);
     }
 
@@ -51,12 +45,10 @@ public class BakingAppWidget extends AppWidgetProvider {
 
     @Override
     public void onEnabled(Context context) {
-        // Enter relevant functionality for when the first widget is created
     }
 
     @Override
     public void onDisabled(Context context) {
-        // Enter relevant functionality for when the last widget is disabled
     }
 }
 

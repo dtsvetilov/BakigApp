@@ -29,16 +29,16 @@ public class RecipeDetailFragment extends Fragment implements StepsAdapter.Steps
     @BindView(R.id.ingredients)
     TextView ingredients;
 
-    private OnStepClickListener stepClickListener;
+    private IStepClickListener stepClickListener;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
         try {
-            stepClickListener = (OnStepClickListener) context;
+            stepClickListener = (IStepClickListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException("OnStepClickListener Interface not found");
+            throw new ClassCastException("IStepClickListener Interface not found");
         }
     }
 
@@ -71,7 +71,7 @@ public class RecipeDetailFragment extends Fragment implements StepsAdapter.Steps
         stepClickListener.onStepClicked(position);
     }
 
-    public interface OnStepClickListener {
+    public interface IStepClickListener {
         void onStepClicked(int stepPosition);
     }
 }
